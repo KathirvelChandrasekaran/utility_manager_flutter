@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todo_supabase/providers/meta_collection_provider.dart';
+import 'package:todo_supabase/widgets/single_url_bottomsheet.dart';
 
 // ignore: must_be_immutable
 class SingleCollectionView extends StatefulWidget {
@@ -54,6 +55,10 @@ class _SingleCollectionViewState extends State<SingleCollectionView> {
                                       borderRadius: BorderRadius.circular(10),
                                       onTap: () {
                                         HapticFeedback.lightImpact();
+                                        singleURLBottomSheet(
+                                            context,
+                                            res.value.data[i]['url'],
+                                            res.value.data[i]['id']);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
