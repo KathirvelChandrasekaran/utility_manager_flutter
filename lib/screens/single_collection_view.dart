@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:todo_supabase/providers/meta_collection_provider.dart';
 
 // ignore: must_be_immutable
@@ -38,76 +39,85 @@ class _SingleCollectionViewState extends State<SingleCollectionView> {
           body: Center(
               child: singleCollection.map(
             data: (res) {
-              return ListView(
-                children: [
-                  for (var i = 0; i < res.value.data.length; i++)
-                    Container(
-                      child: Column(
+              return Container(
+                child: res.value.data.length < 1
+                    ? Lottie.asset('assets/empty.json')
+                    : ListView(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(10),
-                              onTap: () {
-                                HapticFeedback.lightImpact();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    children: [
-                                      Image.network(
-                                          res.value.data[i]['photoURL']),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        res.value.data[i]['title'],
-                                        style: TextStyle(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25,
+                          for (var i = 0; i < res.value.data.length; i++)
+                            Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(10),
+                                      onTap: () {
+                                        HapticFeedback.lightImpact();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Theme.of(context).primaryColor,
                                         ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        res.value.data[i]['description'],
-                                        style: TextStyle(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 20,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Column(
+                                            children: [
+                                              Image.network(res.value.data[i]
+                                                  ['photoURL']),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]['title'],
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .accentColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]
+                                                    ['description'],
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .accentColor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 20,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]['type'],
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .accentColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        textAlign: TextAlign.center,
                                       ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        res.value.data[i]['type'],
-                                        style: TextStyle(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
-                          ),
+                            )
                         ],
                       ),
-                    )
-                ],
               );
             },
             loading: (_) => SizedBox(
