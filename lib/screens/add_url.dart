@@ -24,6 +24,7 @@ class _AddURLState extends State<AddURL> {
       final url = watch(urlProvider);
 
       return Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_supabase/providers/meta_collection_provider.dart';
 import 'package:todo_supabase/providers/meta_info_provider.dart';
 import 'package:todo_supabase/screens/webview_url.dart';
 import 'package:todo_supabase/services/meta_info_service.dart';
+import 'package:todo_supabase/widgets/create_new_collection.dart';
 import 'package:todo_supabase/widgets/rounded_button.dart';
 
 // ignore: non_constant_identifier_names
 FutureBuilder<dynamic> MetaInfoDisplay(
     MetaInfoProvider url, GlobalKey<FormState> _key) {
   late String photoURL, title, description, type;
+  TextEditingController _controller = TextEditingController();
+
   return FutureBuilder(
     future: MetaInfoService().getMetaInformation(url.url),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -122,7 +126,9 @@ FutureBuilder<dynamic> MetaInfoDisplay(
                             AcceptRoundedButtonWidget(
                               buttonText: "Save URL",
                               width: MediaQuery.of(context).size.width * 0.8,
-                              onpressed: () {},
+                              onpressed: () {
+                                viewUserCollection(context, _controller);
+                              },
                             ),
                           ],
                         ),
@@ -137,6 +143,74 @@ FutureBuilder<dynamic> MetaInfoDisplay(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+          );
+        },
+      );
+    },
+  );
+}
+
+Future<dynamic> viewUserCollection(
+    BuildContext context, TextEditingController _controller) {
+  return showModalBottomSheet(
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15.0),
+    ),
+    builder: (BuildContext context) {
+      return Consumer(
+        builder: (context, watch, child) {
+          final userMetaCollection = watch(metaCollectionOfUser);
+          return Column(
+            children: [
+              SizedBox(
+                height: 15,
+              ),
+              RoundedButtonWidget(
+                buttonText: "Create new collection",
+                width: MediaQuery.of(context).size.width * 0.8,
+                onpressed: () {
+                  createNewCollection(context, _controller);
+                },
+              ),
+              userMetaCollection.map(
+                data: (res) {
+                  return Flexible(
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: res.value.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            Text(
+                              res.value.data[index]['collection_name'],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
+                loading: (_) => SizedBox(
+                  width: 300.0,
+                  child: LinearProgressIndicator(
+                    backgroundColor: Theme.of(context).accentColor,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                error: (_) => Text(
+                  _.error.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           );
         },
       );
