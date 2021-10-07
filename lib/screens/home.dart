@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_supabase/screens/account_page.dart';
+import 'package:todo_supabase/screens/todo_page.dart';
+import 'package:todo_supabase/screens/url_manager.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,8 +11,42 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int index = 0;
+  List<Widget> _screens = [
+    TodoPage(),
+    UrlManager(),
+    AccountPage(),
+  ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: _screens.elementAt(index),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap: (int val) {
+          setState(() {
+            index = val;
+          });
+        },
+        backgroundColor: Theme.of(context).accentColor,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt_rounded),
+            label: 'Todo List',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.link_rounded),
+            label: 'URL Manager',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline_rounded),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
   }
 }
