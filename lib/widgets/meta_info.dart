@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_supabase/providers/meta_info_provider.dart';
+import 'package:todo_supabase/screens/webview_url.dart';
 import 'package:todo_supabase/services/meta_info_service.dart';
 import 'package:todo_supabase/widgets/rounded_button.dart';
 
@@ -104,7 +105,16 @@ FutureBuilder<dynamic> MetaInfoDisplay(
                             RoundedButtonWidget(
                               buttonText: "Open URL",
                               width: MediaQuery.of(context).size.width * 0.8,
-                              onpressed: () {},
+                              onpressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WebViewURL(
+                                      url: url.url,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               height: 15,

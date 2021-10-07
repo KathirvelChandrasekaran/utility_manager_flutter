@@ -95,7 +95,6 @@ class _AddURLState extends State<AddURL> {
                         onpressed: () {
                           if (_key.currentState!.validate()) {
                             url.listenToURL(_controller.text);
-                            watch(getMetaInfo(_controller.text));
                             setState(() {
                               _showMeta = true;
                             });
