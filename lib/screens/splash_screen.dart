@@ -26,7 +26,7 @@ class _SplashScreenState extends AuthState<SplashScreen> {
     return Scaffold(
       body: ListView(
         children: [
-          Lottie.asset('assets/music.json'),
+          Lottie.asset('assets/splash.json'),
           Center(
             child: Text(
               "Music Club",
