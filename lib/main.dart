@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_supabase/screens/account_page.dart';
+import 'package:todo_supabase/screens/add_url.dart';
 import 'package:todo_supabase/screens/add_user_details.dart';
 import 'package:todo_supabase/screens/home.dart';
 import 'package:todo_supabase/screens/login.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/account': (_) => AccountPage(),
         '/addDetails': (_) => AddUserDetails(),
         '/home': (_) => Home(),
+        '/addURL': (_) => AddURL(),
       },
     );
   }

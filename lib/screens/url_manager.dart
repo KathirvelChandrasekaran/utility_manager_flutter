@@ -10,6 +10,20 @@ class UrlManager extends StatefulWidget {
 class _UrlManagerState extends State<UrlManager> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addURL');
+        },
+        child: Icon(
+          Icons.link_rounded,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+      ),
+    );
   }
 }

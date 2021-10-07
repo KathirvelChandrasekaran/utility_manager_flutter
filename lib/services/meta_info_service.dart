@@ -20,12 +20,10 @@ class MetaInfoService {
           'Authorization': "Basic " + encodeURL,
         },
       );
-      // print(response.body);
+      print(response.body);
       if (response.statusCode == 200)
         // return convert.jsonDecode(response.body) as List;
         return metaInfoFromJson(response.body);
-      else
-        return null;
     } on Exception catch (e) {
       print("object");
       print(e);
@@ -49,13 +47,9 @@ class MetaInfoService {
           'Authorization': "Basic " + encodeURL,
         },
       );
-      if (response.statusCode == 200)
-        return convert.jsonDecode(response.body);
-      // return metaInfoFromJson(response.body);
-      else
-        return null;
+      // print(response.body);
+      if (response.statusCode == 200) return convert.jsonDecode(response.body);
     } on Exception catch (e) {
-      print("object");
       print(e);
       throw e;
     }
