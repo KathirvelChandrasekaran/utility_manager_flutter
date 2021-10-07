@@ -129,7 +129,7 @@ FutureBuilder<dynamic> MetaInfoDisplay(
                               width: MediaQuery.of(context).size.width * 0.8,
                               onpressed: () {
                                 addURLToCollection(context, _controller,
-                                    photoURL, title, type, url);
+                                    photoURL, title, type, description, url);
                               },
                             ),
                           ],
@@ -152,8 +152,14 @@ FutureBuilder<dynamic> MetaInfoDisplay(
   );
 }
 
-addURLToCollection(BuildContext context, TextEditingController _controller,
-    String photoURL, String title, String type, MetaInfoProvider url) async {
+addURLToCollection(
+    BuildContext context,
+    TextEditingController _controller,
+    String photoURL,
+    String title,
+    String type,
+    description,
+    MetaInfoProvider url) async {
   showModalBottomSheet(
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     context: context,
@@ -266,6 +272,11 @@ addURLToCollection(BuildContext context, TextEditingController _controller,
                                                       'title': title.toString(),
                                                       'type': type.toString(),
                                                       'url': url.url,
+                                                      'collection_name': res
+                                                              .value.data[index]
+                                                          ['collection_name'],
+                                                      'description':
+                                                          description,
                                                     }
                                                   ]).execute();
                                                   Navigator.popUntil(

@@ -18,4 +18,14 @@ class MetaCollectionService {
         .execute();
     return res;
   }
+
+  Future<PostgrestResponse> get(String collectionName) async {
+    var res = await supabase
+        .from("URLCollection")
+        .select()
+        .eq('collection_name', collectionName)
+        .eq("created_by", supabase.auth.currentUser?.email)
+        .execute();
+    return res;
+  }
 }
