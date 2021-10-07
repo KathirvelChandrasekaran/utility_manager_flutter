@@ -24,8 +24,9 @@ class _LoginState extends AuthState<Login> {
     final response = await supabase.auth.signIn(
         email: _emailController.text,
         options: AuthOptions(
-            redirectTo:
-                kIsWeb ? null : 'io.supabase.musicclub://login-callback/'));
+            redirectTo: kIsWeb
+                ? null
+                : 'io.supabase.utilitysupabase://login-callback/'));
     final error = response.error;
     if (error != null) {
       context.showErrorSnackBar(message: error.message);
