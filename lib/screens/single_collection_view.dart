@@ -38,109 +38,111 @@ class _SingleCollectionViewState extends State<SingleCollectionView> {
             ),
           ),
           body: Center(
-              child: singleCollection.map(
-            data: (res) {
-              return Container(
-                child: res.value.data.length < 1
-                    ? Lottie.asset('assets/empty.json')
-                    : ListView(
-                        children: [
-                          for (var i = 0; i < res.value.data.length; i++)
-                            Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(10),
-                                      onTap: () {
-                                        HapticFeedback.lightImpact();
-                                        singleURLBottomSheet(
-                                            context,
-                                            res.value.data[i]['url'],
-                                            res.value.data[i]['id']);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Column(
-                                            children: [
-                                              Image.network(res.value.data[i]
-                                                  ['photoURL']),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]['title'],
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
+            child: singleCollection.map(
+              data: (res) {
+                return Container(
+                  child: res.value.data.length < 1
+                      ? Lottie.asset('assets/empty.json')
+                      : ListView(
+                          children: [
+                            for (var i = 0; i < res.value.data.length; i++)
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () {
+                                          HapticFeedback.lightImpact();
+                                          singleURLBottomSheet(
+                                              context,
+                                              res.value.data[i]['url'],
+                                              res.value.data[i]['id']);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Column(
+                                              children: [
+                                                Image.network(res.value.data[i]
+                                                    ['photoURL']),
+                                                SizedBox(
+                                                  height: 15,
                                                 ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]
-                                                    ['description'],
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 20,
+                                                Text(
+                                                  res.value.data[i]['title'],
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                  ),
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]['type'],
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
+                                                SizedBox(
+                                                  height: 15,
                                                 ),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ],
+                                                Text(
+                                                  res.value.data[i]
+                                                      ['description'],
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 20,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Text(
+                                                  res.value.data[i]['type'],
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                        ],
-                      ),
-              );
-            },
-            loading: (_) => SizedBox(
-              width: 300.0,
-              child: LinearProgressIndicator(
-                backgroundColor: Theme.of(context).accentColor,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).primaryColor,
+                                  ],
+                                ),
+                              )
+                          ],
+                        ),
+                );
+              },
+              loading: (_) => SizedBox(
+                width: 300.0,
+                child: LinearProgressIndicator(
+                  backgroundColor: Theme.of(context).accentColor,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              error: (_) => Text(
+                _.error.toString(),
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
             ),
-            error: (_) => Text(
-              _.error.toString(),
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          )),
+          ),
         );
       },
     );

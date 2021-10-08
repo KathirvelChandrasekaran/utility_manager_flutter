@@ -1,6 +1,9 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:todo_supabase/providers/todo_list_provider.dart';
 import 'package:todo_supabase/utils/constants.dart';
 import 'package:todo_supabase/widgets/rounded_button.dart';
 
@@ -14,7 +17,7 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   TextEditingController _taskNameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  String? dateTime;
+  String dateTime = DateTime.now().toLocal().toString();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class _TodoPageState extends State<TodoPage> {
         title: Text("Todo List"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: SlidingUpPanel(
           parallaxEnabled: true,
           isDraggable: true,
@@ -36,7 +39,7 @@ class _TodoPageState extends State<TodoPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: Icon(
                     Icons.maximize_rounded,
                     size: 50,
@@ -136,12 +139,12 @@ class _TodoPageState extends State<TodoPage> {
                     }),
                     validator: (val) {
                       setState(() {
-                        dateTime = val;
+                        dateTime = val!;
                       });
                       return null;
                     },
                     onSaved: (val) => setState(() {
-                      dateTime = val;
+                      dateTime = val!;
                     }),
                   ),
                 ),
@@ -155,7 +158,7 @@ class _TodoPageState extends State<TodoPage> {
                     buttonText: 'Add task',
                     width: MediaQuery.of(context).size.width * 0.90,
                     onpressed: () async {
-                      await supabase.from('TodoList').insert([
+                      var res = await supabase.from('TodoList').insert([
                         {
                           'email': supabase.auth.currentUser?.email,
                           'task_name': _taskNameController.text,
@@ -163,21 +166,110 @@ class _TodoPageState extends State<TodoPage> {
                           'date_time': dateTime,
                         }
                       ]).execute();
+                      _descriptionController.text = "";
+                      _taskNameController.text = "";
                       context.showSnackBar(message: "Successfully inserted!");
+                      Navigator.pushReplacementNamed(context, '/home');
                     },
                   ),
                 )
               ],
             ),
           ),
-          body: Center(
-            child: Text(
-              "This is the Widget behind the sliding panel",
-              style: TextStyle(
-                color: Colors.white,
+          body: Consumer(builder: (context, watch, child) {
+            final todos = watch(todoListProvider);
+            return Center(
+                child: todos.map(
+              data: (res) {
+                return Container(
+                  child: res.value.data.length < 1
+                      ? Lottie.asset('assets/empty.json')
+                      : ListView(
+                          children: [
+                            for (var i = 0; i < res.value.data.length; i++)
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]['task_name'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]
+                                                    ['task_description'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 20,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                res.value.data[i]['date_time'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                          ],
+                        ),
+                );
+              },
+              loading: (_) => SizedBox(
+                width: 300.0,
+                child: LinearProgressIndicator(
+                  backgroundColor: Theme.of(context).accentColor,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
-            ),
-          ),
+              error: (_) => Text(
+                _.error.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ));
+          }),
         ),
       ),
     );
