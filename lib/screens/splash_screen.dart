@@ -29,7 +29,7 @@ class _SplashScreenState extends AuthState<SplashScreen> {
           Lottie.asset('assets/splash.json'),
           Center(
             child: Text(
-              "Music Club",
+              "Utility Manager",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
