@@ -18,7 +18,7 @@ class _TodoPageState extends State<TodoPage> {
   TextEditingController _taskNameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   String dateTime = DateTime.now().toLocal().toString();
-
+  String selectColor = "0XFFe63946";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +52,7 @@ class _TodoPageState extends State<TodoPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.only(
                     right: 25.0,
@@ -148,7 +148,104 @@ class _TodoPageState extends State<TodoPage> {
                     }),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 25.0,
+                    left: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFFe63946";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFFe63946),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFFfb8500";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFFfb8500),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFFa8dadc";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFFa8dadc),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFF457b9d";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFF457b9d),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFF1d3557";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFF1d3557),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectColor = "0XFFbc6c25";
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0XFFbc6c25),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                Container(
+                  width: 50,
+                  child: Divider(
+                    thickness: 5,
+                    color: Color(
+                      int.parse(selectColor),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.only(
                     right: 25.0,
@@ -158,12 +255,13 @@ class _TodoPageState extends State<TodoPage> {
                     buttonText: 'Add task',
                     width: MediaQuery.of(context).size.width * 0.90,
                     onpressed: () async {
-                      var res = await supabase.from('TodoList').insert([
+                      await supabase.from('TodoList').insert([
                         {
                           'email': supabase.auth.currentUser?.email,
                           'task_name': _taskNameController.text,
                           'task_description': _descriptionController.text,
                           'date_time': dateTime,
+                          'color': selectColor,
                         }
                       ]).execute();
                       _descriptionController.text = "";
@@ -198,7 +296,8 @@ class _TodoPageState extends State<TodoPage> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: Theme.of(context).primaryColor,
+                                          color: Color(int.parse(
+                                              res.value.data[i]['color'])),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(20.0),
