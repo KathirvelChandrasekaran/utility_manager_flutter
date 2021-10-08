@@ -18,6 +18,7 @@ class _TodoPageState extends State<TodoPage> {
   TextEditingController _descriptionController = TextEditingController();
   String dateTime = DateTime.now().toLocal().toString();
   String selectColor = "0XFFe63946";
+  late int year, month, date, hr, mins;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,8 +134,16 @@ class _TodoPageState extends State<TodoPage> {
                     lastDate: DateTime(2100),
                     dateLabelText: 'Date',
                     timeLabelText: "Hour",
+                    enableInteractiveSelection: true,
                     onChanged: (val) => setState(() {
                       dateTime = val;
+                      String val1 = val.replaceAll(":", "-");
+                      val1 = val1.replaceAll(" ", "-");
+                      year = int.parse(val1.split("-")[0]);
+                      month = int.parse(val1.split("-")[1]);
+                      date = int.parse(val1.split("-")[2]);
+                      hr = int.parse(val1.split("-")[3]);
+                      mins = int.parse(val1.split("-")[4]);
                     }),
                     validator: (val) {
                       setState(() {
@@ -267,6 +276,11 @@ class _TodoPageState extends State<TodoPage> {
                           'task_description': _descriptionController.text,
                           'date_time': dateTime,
                           'color': selectColor,
+                          'year': year,
+                          'month': month,
+                          'date': date,
+                          'hr': hr,
+                          'mins': mins,
                         }
                       ]).execute();
                       _descriptionController.text = "";
