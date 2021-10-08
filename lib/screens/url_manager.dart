@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_supabase/providers/meta_collection_provider.dart';
+import 'package:todo_supabase/screens/url_search.dart';
 import 'package:todo_supabase/screens/single_collection_view.dart';
 import 'package:todo_supabase/widgets/rounded_button.dart';
 
@@ -23,6 +25,33 @@ class _UrlManagerState extends State<UrlManager> {
               title: Text(
                 "URL Manager",
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15.0, top: 10),
+                  child: Container(
+                    height: 75,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Search(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        CupertinoIcons.search,
+                        color: Theme.of(context).errorColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
