@@ -1,11 +1,10 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:todo_supabase/providers/todo_list_provider.dart';
 import 'package:todo_supabase/utils/constants.dart';
 import 'package:todo_supabase/widgets/rounded_button.dart';
+import 'package:todo_supabase/widgets/todo_body.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({Key? key}) : super(key: key);
@@ -159,6 +158,7 @@ class _TodoPageState extends State<TodoPage> {
                     children: [
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFFe63946";
                           });
@@ -172,6 +172,7 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFFfb8500";
                           });
@@ -185,6 +186,7 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFFa8dadc";
                           });
@@ -198,6 +200,7 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFF457b9d";
                           });
@@ -211,6 +214,7 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFF1d3557";
                           });
@@ -224,6 +228,7 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectColor = "0XFFbc6c25";
                           });
@@ -274,101 +279,7 @@ class _TodoPageState extends State<TodoPage> {
               ],
             ),
           ),
-          body: Consumer(builder: (context, watch, child) {
-            final todos = watch(todoListProvider);
-            return Center(
-                child: todos.map(
-              data: (res) {
-                return Container(
-                  child: res.value.data.length < 1
-                      ? Lottie.asset('assets/empty.json')
-                      : ListView(
-                          children: [
-                            for (var i = 0; i < res.value.data.length; i++)
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Color(int.parse(
-                                              res.value.data[i]['color'])),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]['task_name'],
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]
-                                                    ['task_description'],
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 20,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              Text(
-                                                res.value.data[i]['date_time'],
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ],
-                        ),
-                );
-              },
-              loading: (_) => SizedBox(
-                width: 300.0,
-                child: LinearProgressIndicator(
-                  backgroundColor: Theme.of(context).accentColor,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              error: (_) => Text(
-                _.error.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ));
-          }),
+          body: todoBody(),
         ),
       ),
     );
